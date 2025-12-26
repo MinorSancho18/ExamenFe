@@ -157,32 +157,38 @@ $(document).ready(function () {
                 if (response.data) {
                     const curso = response.data;
                     const detalle = `
-                        <dl class="row">
-                            <dt class="col-sm-4">ID:</dt>
-                            <dd class="col-sm-8">${curso.id}</dd>
-                            
-                            <dt class="col-sm-4">Nombre:</dt>
-                            <dd class="col-sm-8">${curso.nombre}</dd>
-                            
-                            <dt class="col-sm-4">Código:</dt>
-                            <dd class="col-sm-8">${curso.codigo}</dd>
-                            
-                            <dt class="col-sm-4">Fecha Inicio:</dt>
-                            <dd class="col-sm-8">${new Date(curso.fechaInicio).toLocaleDateString('es-ES')}</dd>
-                            
-                            <dt class="col-sm-4">Fecha Fin:</dt>
-                            <dd class="col-sm-8">${new Date(curso.fechaFin).toLocaleDateString('es-ES')}</dd>
-                            
-                            <dt class="col-sm-4">Profesor ID:</dt>
-                            <dd class="col-sm-8">${curso.idProfesor}</dd>
-                            
-                            <dt class="col-sm-4">Estado:</dt>
-                            <dd class="col-sm-8">
+                        <div class="row mb-2">
+                            <div class="col-md-4"><strong>ID:</strong></div>
+                            <div class="col-md-8">${curso.id}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4"><strong>Nombre:</strong></div>
+                            <div class="col-md-8">${curso.nombre}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4"><strong>Código:</strong></div>
+                            <div class="col-md-8">${curso.codigo}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4"><strong>Fecha Inicio:</strong></div>
+                            <div class="col-md-8">${new Date(curso.fechaInicio).toLocaleDateString('es-ES')}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4"><strong>Fecha Fin:</strong></div>
+                            <div class="col-md-8">${new Date(curso.fechaFin).toLocaleDateString('es-ES')}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4"><strong>Profesor ID:</strong></div>
+                            <div class="col-md-8">${curso.idProfesor}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4"><strong>Estado:</strong></div>
+                            <div class="col-md-8">
                                 <span class="badge ${curso.activo ? 'bg-success' : 'bg-danger'}">
                                     ${curso.activo ? 'Activo' : 'Inactivo'}
                                 </span>
-                            </dd>
-                        </dl>
+                            </div>
+                        </div>
                     `;
                     $('#detalleCursoContent').html(detalle);
                     $('#modalDetalleCurso').modal('show');

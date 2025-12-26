@@ -123,22 +123,26 @@ $(document).ready(function () {
                 if (response.data) {
                     const profesor = response.data;
                     const detalle = `
-                        <dl class="row">
-                            <dt class="col-sm-4">ID:</dt>
-                            <dd class="col-sm-8">${profesor.id}</dd>
-                            
-                            <dt class="col-sm-4">Nombre:</dt>
-                            <dd class="col-sm-8">${profesor.nombre}</dd>
-                            
-                            <dt class="col-sm-4">Correo:</dt>
-                            <dd class="col-sm-8">${profesor.correo}</dd>
-                            
-                            <dt class="col-sm-4">Edad:</dt>
-                            <dd class="col-sm-8">${profesor.edad}</dd>
-                            
-                            <dt class="col-sm-4">Salario:</dt>
-                            <dd class="col-sm-8">$${parseFloat(profesor.salario).toLocaleString('es-ES', { minimumFractionDigits: 2 })}</dd>
-                        </dl>
+                        <div class="row mb-2">
+                            <div class="col-md-4"><strong>ID:</strong></div>
+                            <div class="col-md-8">${profesor.id}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4"><strong>Nombre:</strong></div>
+                            <div class="col-md-8">${profesor.nombre}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4"><strong>Correo:</strong></div>
+                            <div class="col-md-8">${profesor.correo}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4"><strong>Edad:</strong></div>
+                            <div class="col-md-8">${profesor.edad}</div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-4"><strong>Salario:</strong></div>
+                            <div class="col-md-8">$${parseFloat(profesor.salario).toLocaleString('es-ES', { minimumFractionDigits: 2 })}</div>
+                        </div>
                     `;
                     $('#detalleProfesorContent').html(detalle);
                     $('#modalDetalleProfesor').modal('show');
