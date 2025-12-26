@@ -147,31 +147,44 @@ namespace Frontend.Infrastructure.HttpClients
                         };
                     }
 
-                    var apiResponse = JsonSerializer.Deserialize<ApiResponse<T>>(content, _jsonOptions);
-                    return apiResponse ?? new ApiResponse<T> { Success = true, Data = default };
+                    // Deserializa a JsonElement para inspeccionar la estructura
+                    using (JsonDocument doc = JsonDocument.Parse(content))
+                    {
+                        var root = doc.RootElement;
+                        
+                        // Verifica si es un ApiResponse (tiene propiedades "success", "message", "data", "errors")
+                        bool isApiResponse = root.ValueKind == JsonValueKind.Object &&
+                                           (root.TryGetProperty("success", out _) || 
+                                            root.TryGetProperty("message", out _) ||
+                                            root.TryGetProperty("errors", out _));
+
+                        if (isApiResponse)
+                        {
+                            // Deserializa como ApiResponse<T>
+                            var apiResponse = JsonSerializer.Deserialize<ApiResponse<T>>(content, _jsonOptions);
+                            return apiResponse ?? new ApiResponse<T> { Success = true, Data = default };
+                        }
+                        else
+                        {
+                            // Es un DTO directo, deserializa como T
+                            var data = JsonSerializer.Deserialize<T>(content, _jsonOptions);
+                            return new ApiResponse<T>
+                            {
+                                Success = true,
+                                Message = "Operación completada",
+                                Data = data
+                            };
+                        }
+                    }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Si la respuesta no es un ApiResponse, intenta deserializar directamente como T
-                    try
+                    return new ApiResponse<T>
                     {
-                        var data = JsonSerializer.Deserialize<T>(content, _jsonOptions);
-                        return new ApiResponse<T>
-                        {
-                            Success = true,
-                            Message = "Operación completada",
-                            Data = data
-                        };
-                    }
-                    catch (Exception ex)
-                    {
-                        return new ApiResponse<T>
-                        {
-                            Success = false,
-                            Message = $"Error deserializando respuesta: {ex.Message}",
-                            Errors = new List<string> { ex.Message }
-                        };
-                    }
+                        Success = false,
+                        Message = $"Error deserializando respuesta: {ex.Message}",
+                        Errors = new List<string> { ex.Message }
+                    };
                 }
             }
 
