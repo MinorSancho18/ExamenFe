@@ -16,7 +16,8 @@ const AjaxHelper = {
             dataType: 'json',
             showLoading: true,
             successMessage: null,
-            errorMessage: null
+            errorMessage: null,
+            showSuccess: true
         };
 
         const settings = Object.assign({}, defaults, options);
@@ -35,7 +36,9 @@ const AjaxHelper = {
                 if (settings.showLoading) {
                     AjaxHelper.hideLoading();
                 }
-                AjaxHelper.handleSuccess(response, settings);
+                if (settings.showSuccess !== false) {
+                    AjaxHelper.handleSuccess(response, settings);
+                }
                 if (settings.success) {
                     settings.success(response);
                 }

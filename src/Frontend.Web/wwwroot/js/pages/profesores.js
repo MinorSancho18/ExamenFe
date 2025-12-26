@@ -118,6 +118,7 @@ $(document).ready(function () {
             url: '/Profesores/GetById?id=' + id,
             type: 'GET',
             showLoading: true,
+            showSuccess: false,
             success: function (response) {
                 if (response.data) {
                     const profesor = response.data;
@@ -154,6 +155,7 @@ $(document).ready(function () {
             url: '/Profesores/GetById?id=' + id,
             type: 'GET',
             showLoading: true,
+            showSuccess: false,
             success: function (response) {
                 if (response.data) {
                     const profesor = response.data;
@@ -177,6 +179,7 @@ $(document).ready(function () {
             url: '/Profesores/GetById?id=' + profesorIdParaEliminar,
             type: 'GET',
             showLoading: false,
+            showSuccess: false,
             success: function (response) {
                 if (response.data) {
                     $('#nombreProfesorEliminar').text(response.data.nombre);

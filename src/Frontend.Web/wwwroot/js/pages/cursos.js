@@ -152,6 +152,7 @@ $(document).ready(function () {
             url: '/Cursos/GetById?id=' + id,
             type: 'GET',
             showLoading: true,
+            showSuccess: false,
             success: function (response) {
                 if (response.data) {
                     const curso = response.data;
@@ -198,6 +199,7 @@ $(document).ready(function () {
             url: '/Cursos/GetById?id=' + id,
             type: 'GET',
             showLoading: true,
+            showSuccess: false,
             success: function (response) {
                 if (response.data) {
                     const curso = response.data;
