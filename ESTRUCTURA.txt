@@ -1,0 +1,76 @@
+src/
+├── Frontend.Application
+│   ├── Class1.cs
+│   ├── DTOs
+│   │   ├── Common
+│   │   │   └── ApiResponse.cs
+│   │   ├── Cursos
+│   │   │   ├── ActualizarCursoCommand.cs
+│   │   │   ├── CambiarEstadoCursoCommand.cs
+│   │   │   ├── CrearCursoCommand.cs
+│   │   │   └── CursoDTO.cs
+│   │   └── Profesores
+│   │       ├── ActualizarProfesorCommand.cs
+│   │       ├── CrearProfesorCommand.cs
+│   │       └── ProfesorDTO.cs
+│   ├── Frontend.Application.csproj
+│   └── Services
+│       └── Interfaces
+│           ├── ICursosApiService.cs
+│           └── IProfesoresApiService.cs
+├── Frontend.Domain
+│   ├── Class1.cs
+│   └── Frontend.Domain.csproj
+├── Frontend.Infrastructure
+│   ├── Class1.cs
+│   ├── Frontend.Infrastructure.csproj
+│   ├── HttpClients
+│   │   └── BaseApiService.cs
+│   ├── Services
+│   │   ├── CursosApiService.cs
+│   │   └── ProfesoresApiService.cs
+│   └── Settings
+│       └── ApiSettings.cs
+└── Frontend.Web
+    ├── Controllers
+    │   ├── CursosController.cs
+    │   ├── HomeController.cs
+    │   └── ProfesoresController.cs
+    ├── Frontend.Web.csproj
+    ├── Models
+    │   └── ErrorViewModel.cs
+    ├── Program.cs
+    ├── Properties
+    │   └── launchSettings.json
+    ├── Views
+    │   ├── Cursos
+    │   │   └── Index.cshtml
+    │   ├── Home
+    │   │   ├── Index.cshtml
+    │   │   └── Privacy.cshtml
+    │   ├── Profesores
+    │   │   └── Index.cshtml
+    │   ├── Shared
+    │   │   ├── Error.cshtml
+    │   │   ├── _Layout.cshtml
+    │   │   ├── _Layout.cshtml.css
+    │   │   └── _ValidationScriptsPartial.cshtml
+    │   ├── _ViewImports.cshtml
+    │   └── _ViewStart.cshtml
+    ├── appsettings.Development.json
+    ├── appsettings.json
+    └── wwwroot
+        ├── css
+        │   └── site.css
+        ├── favicon.ico
+        ├── js
+        │   ├── helpers
+        │   ├── pages
+        │   └── site.js
+        └── lib
+            ├── bootstrap
+            ├── jquery
+            ├── jquery-validation
+            └── jquery-validation-unobtrusive
+
+32 directories, 42 files
