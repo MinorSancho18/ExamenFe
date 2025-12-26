@@ -17,10 +17,11 @@ $(document).ready(function () {
                     };
                 },
                 dataSrc: function (json) {
-                    if (json.data && Array.isArray(json.data)) {
-                        return json.data;
+                    if (!json.success) {
+                        AjaxHelper.showError(json.message || 'Error al cargar los profesores');
+                        return [];
                     }
-                    return [];
+                    return json.data || [];
                 },
                 error: function (xhr) {
                     AjaxHelper.showError('Error al cargar los profesores');
