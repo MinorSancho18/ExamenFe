@@ -20,15 +20,15 @@ namespace Frontend.Infrastructure.Services
             if (idProfesor.HasValue)
                 endpoint += $"&idProfesor={idProfesor.Value}";
 
-            var response = await GetAsync<PaginatedResponse<CursoDTO>>(endpoint);
+            var response = await GetAsync<List<CursoDTO>>(endpoint);
             
-            if (response.Success && response.Data?.Items != null)
+            if (response.Success && response.Data != null)
             {
                 return new ApiResponse<IReadOnlyList<CursoDTO>>
                 {
                     Success = response.Success,
                     Message = response.Message,
-                    Data = response.Data.Items,
+                    Data = response.Data.AsReadOnly(),
                     Errors = response.Errors
                 };
             }
