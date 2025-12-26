@@ -14,13 +14,32 @@ namespace Frontend.Infrastructure.Services
         {
         }
 
-        public async Task<ApiResponse<PaginatedResponse<CursoDTO>>> GetCursosAsync(int page, int pageSize, int? idProfesor = null)
+        public async Task<ApiResponse<IReadOnlyList<CursoDTO>>> GetCursosAsync(int page, int pageSize, int? idProfesor = null)
         {
             var endpoint = $"{_apiSettings.BaseUrl}/api/cursos?page={page}&pageSize={pageSize}";
             if (idProfesor.HasValue)
                 endpoint += $"&idProfesor={idProfesor.Value}";
 
-            return await GetAsync<PaginatedResponse<CursoDTO>>(endpoint);
+            var response = await GetAsync<PaginatedResponse<CursoDTO>>(endpoint);
+            
+            if (response.Success && response.Data?.Items != null)
+            {
+                return new ApiResponse<IReadOnlyList<CursoDTO>>
+                {
+                    Success = response.Success,
+                    Message = response.Message,
+                    Data = response.Data.Items,
+                    Errors = response.Errors
+                };
+            }
+
+            return new ApiResponse<IReadOnlyList<CursoDTO>>
+            {
+                Success = response.Success,
+                Message = response.Message,
+                Data = new List<CursoDTO>().AsReadOnly(),
+                Errors = response.Errors
+            };
         }
 
         public async Task<ApiResponse<CursoDTO>> GetCursoByIdAsync(int id)

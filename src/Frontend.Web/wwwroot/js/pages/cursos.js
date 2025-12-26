@@ -17,8 +17,8 @@ $(document).ready(function () {
                     };
                 },
                 dataSrc: function (json) {
-                    if (json.data && json.data.items) {
-                        return json.data.items;
+                    if (json.data && Array.isArray(json.data)) {
+                        return json.data;
                     }
                     return [];
                 },
@@ -88,8 +88,8 @@ $(document).ready(function () {
                 select.empty();
                 select.append('<option value="">Seleccionar profesor...</option>');
                 
-                if (response.data && response.data.items) {
-                    response.data.items.forEach(profesor => {
+                if (response.data && Array.isArray(response.data)) {
+                    response.data.forEach(profesor => {
                         select.append(`<option value="${profesor.id}">${profesor.nombre}</option>`);
                     });
                 }

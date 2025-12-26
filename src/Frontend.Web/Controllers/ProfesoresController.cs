@@ -22,7 +22,17 @@ namespace Frontend.Web.Controllers
         public async Task<IActionResult> GetProfesores(int page = 1, int pageSize = 10)
         {
             var response = await _profesoresApiService.GetProfesoresAsync(page, pageSize);
-            return Json(response);
+            
+            // Retornar en formato compatible con DataTables
+            return Json(new
+            {
+                success = response.Success,
+                message = response.Message,
+                data = response.Data,
+                errors = response.Errors,
+                recordsTotal = response.Data?.Count ?? 0,
+                recordsFiltered = response.Data?.Count ?? 0
+            });
         }
 
         [HttpGet]

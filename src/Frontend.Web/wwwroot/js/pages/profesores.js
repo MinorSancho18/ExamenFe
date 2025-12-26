@@ -17,8 +17,8 @@ $(document).ready(function () {
                     };
                 },
                 dataSrc: function (json) {
-                    if (json.data && json.data.items) {
-                        return json.data.items;
+                    if (json.data && Array.isArray(json.data)) {
+                        return json.data;
                     }
                     return [];
                 },

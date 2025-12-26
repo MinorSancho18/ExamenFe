@@ -24,7 +24,17 @@ namespace Frontend.Web.Controllers
         public async Task<IActionResult> GetCursos(int page = 1, int pageSize = 10, int? idProfesor = null)
         {
             var response = await _cursosApiService.GetCursosAsync(page, pageSize, idProfesor);
-            return Json(response);
+            
+            // Retornar en formato compatible con DataTables
+            return Json(new
+            {
+                success = response.Success,
+                message = response.Message,
+                data = response.Data,
+                errors = response.Errors,
+                recordsTotal = response.Data?.Count ?? 0,
+                recordsFiltered = response.Data?.Count ?? 0
+            });
         }
 
         [HttpGet]

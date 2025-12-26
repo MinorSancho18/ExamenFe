@@ -5,7 +5,7 @@ namespace Frontend.Application.Services.Interfaces
 {
     public interface IProfesoresApiService
     {
-        Task<ApiResponse<PaginatedResponse<ProfesorDTO>>> GetProfesoresAsync(int page, int pageSize);
+        Task<ApiResponse<IReadOnlyList<ProfesorDTO>>> GetProfesoresAsync(int page, int pageSize);
         Task<ApiResponse<ProfesorDTO>> GetProfesorByIdAsync(int id);
         Task<ApiResponse<ProfesorDTO>> CrearProfesorAsync(CrearProfesorCommand command);
         Task<ApiResponse<ProfesorDTO>> ActualizarProfesorAsync(ActualizarProfesorCommand command);

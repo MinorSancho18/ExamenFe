@@ -5,7 +5,7 @@ namespace Frontend.Application.Services.Interfaces
 {
     public interface ICursosApiService
     {
-        Task<ApiResponse<PaginatedResponse<CursoDTO>>> GetCursosAsync(int page, int pageSize, int? idProfesor = null);
+        Task<ApiResponse<IReadOnlyList<CursoDTO>>> GetCursosAsync(int page, int pageSize, int? idProfesor = null);
         Task<ApiResponse<CursoDTO>> GetCursoByIdAsync(int id);
         Task<ApiResponse<CursoDTO>> CrearCursoAsync(CrearCursoCommand command);
         Task<ApiResponse<CursoDTO>> ActualizarCursoAsync(ActualizarCursoCommand command);

@@ -14,10 +14,29 @@ namespace Frontend.Infrastructure.Services
         {
         }
 
-        public async Task<ApiResponse<PaginatedResponse<ProfesorDTO>>> GetProfesoresAsync(int page, int pageSize)
+        public async Task<ApiResponse<IReadOnlyList<ProfesorDTO>>> GetProfesoresAsync(int page, int pageSize)
         {
             var endpoint = $"{_apiSettings.BaseUrl}/api/profesores?page={page}&pageSize={pageSize}";
-            return await GetAsync<PaginatedResponse<ProfesorDTO>>(endpoint);
+            var response = await GetAsync<PaginatedResponse<ProfesorDTO>>(endpoint);
+            
+            if (response.Success && response.Data?.Items != null)
+            {
+                return new ApiResponse<IReadOnlyList<ProfesorDTO>>
+                {
+                    Success = response.Success,
+                    Message = response.Message,
+                    Data = response.Data.Items,
+                    Errors = response.Errors
+                };
+            }
+
+            return new ApiResponse<IReadOnlyList<ProfesorDTO>>
+            {
+                Success = response.Success,
+                Message = response.Message,
+                Data = new List<ProfesorDTO>().AsReadOnly(),
+                Errors = response.Errors
+            };
         }
 
         public async Task<ApiResponse<ProfesorDTO>> GetProfesorByIdAsync(int id)
