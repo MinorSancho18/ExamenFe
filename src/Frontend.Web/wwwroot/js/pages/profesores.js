@@ -65,17 +65,199 @@ $(document).ready(function () {
         });
     }
 
-    // Nuevo profesor
+    // ============== VALIDACIONES POR CAMPO ==============
+
+    // Validar Nombre
+    $('#nombre').on('blur input', function () {
+        const valor = $(this).val().trim();
+        const grupo = $(this).closest('.mb-3');
+        const feedback = grupo.find('.invalid-feedback');
+
+        if (valor === '') {
+            grupo.addClass('was-validated');
+            $(this).addClass('is-invalid');
+            feedback.text('Nombre es requerido.');
+        } else if (valor.length > 200) {
+            grupo.addClass('was-validated');
+            $(this).addClass('is-invalid');
+            feedback.text('Nombre no debe exceder 200 caracteres.');
+        } else {
+            grupo.removeClass('was-validated');
+            $(this).removeClass('is-invalid');
+            feedback.text('');
+        }
+    });
+
+    // Validar Correo
+    $('#correo').on('blur input', function () {
+        const valor = $(this).val().trim();
+        const grupo = $(this).closest('.mb-3');
+        const feedback = grupo.find('.invalid-feedback');
+        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (valor === '') {
+            grupo.addClass('was-validated');
+            $(this).addClass('is-invalid');
+            feedback.text('Correo es requerido.');
+        } else if (!regexEmail.test(valor)) {
+            grupo.addClass('was-validated');
+            $(this).addClass('is-invalid');
+            feedback.text('Correo inválido.');
+        } else if (valor.length > 255) {
+            grupo.addClass('was-validated');
+            $(this).addClass('is-invalid');
+            feedback.text('Correo no debe exceder 255 caracteres.');
+        } else {
+            grupo.removeClass('was-validated');
+            $(this).removeClass('is-invalid');
+            feedback.text('');
+        }
+    });
+
+    // Validar Edad
+    $('#edad').on('blur input change', function () {
+        const valor = $(this).val();
+        const grupo = $(this).closest('.mb-3');
+        const feedback = grupo.find('.invalid-feedback');
+
+        if (valor === '') {
+            grupo.addClass('was-validated');
+            $(this).addClass('is-invalid');
+            feedback.text('Edad es requerida.');
+        } else {
+            const edad = parseInt(valor);
+            if (isNaN(edad) || edad < 18 || edad > 65) {
+                grupo.addClass('was-validated');
+                $(this).addClass('is-invalid');
+                feedback.text('Edad debe estar entre 18 y 65 años.');
+            } else {
+                grupo.removeClass('was-validated');
+                $(this).removeClass('is-invalid');
+                feedback.text('');
+            }
+        }
+    });
+
+    // Validar Salario
+    $('#salario').on('input', function () {
+        // Limitar a 2 decimales mientras se escribe
+        let valor = $(this).val();
+        
+        // Permitir solo números y un punto
+        valor = valor.replace(/[^0-9.]/g, '');
+        
+        // Si hay más de un punto, eliminar los puntos extras
+        const partes = valor.split('.');
+        if (partes.length > 2) {
+            valor = partes[0] + '.' + partes.slice(1).join('');
+        }
+        
+        // Limitar a 2 decimales
+        if (partes.length === 2 && partes[1].length > 2) {
+            valor = partes[0] + '.' + partes[1].substring(0, 2);
+        }
+        
+        $(this).val(valor);
+    });
+
+    $('#salario').on('blur change', function () {
+        const valor = $(this).val();
+        const grupo = $(this).closest('.mb-3');
+        const feedback = grupo.find('.invalid-feedback');
+
+        if (valor === '') {
+            grupo.addClass('was-validated');
+            $(this).addClass('is-invalid');
+            feedback.text('Salario es requerido.');
+        } else {
+            const salario = parseFloat(valor);
+            
+            // Validar decimales
+            const decimales = valor.includes('.') ? valor.split('.')[1].length : 0;
+            if (decimales > 2) {
+                grupo.addClass('was-validated');
+                $(this).addClass('is-invalid');
+                feedback.text('Salario debe tener máximo 2 decimales.');
+            } else if (isNaN(salario) || salario <= 0) {
+                grupo.addClass('was-validated');
+                $(this).addClass('is-invalid');
+                feedback.text('Salario debe ser mayor a 0.');
+            } else if (salario >= 10000) {
+                grupo.addClass('was-validated');
+                $(this).addClass('is-invalid');
+                feedback.text('Salario debe ser menor a 10000.');
+            } else {
+                grupo.removeClass('was-validated');
+                $(this).removeClass('is-invalid');
+                feedback.text('');
+            }
+        }
+    });
+
+    // Función para validar todo el formulario
+    function validarFormulario() {
+        let esValido = true;
+        const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Validar Nombre
+        const nombre = $('#nombre').val().trim();
+        if (nombre === '' || nombre.length > 200) {
+            $('#nombre').closest('.mb-3').addClass('was-validated');
+            $('#nombre').addClass('is-invalid');
+            esValido = false;
+        }
+
+        // Validar Correo
+        const correo = $('#correo').val().trim();
+        if (correo === '' || !regexEmail.test(correo) || correo.length > 255) {
+            $('#correo').closest('.mb-3').addClass('was-validated');
+            $('#correo').addClass('is-invalid');
+            esValido = false;
+        }
+
+        // Validar Edad
+        const edad = parseInt($('#edad').val());
+        if (isNaN(edad) || edad < 18 || edad > 65) {
+            $('#edad').closest('.mb-3').addClass('was-validated');
+            $('#edad').addClass('is-invalid');
+            esValido = false;
+        }
+
+        // Validar Salario
+        const salarioValor = $('#salario').val();
+        const salario = parseFloat(salarioValor);
+        const decimales = salarioValor.includes('.') ? salarioValor.split('.')[1].length : 0;
+        
+        if (isNaN(salario) || salario <= 0 || salario >= 10000 || decimales > 2) {
+            $('#salario').closest('.mb-3').addClass('was-validated');
+            $('#salario').addClass('is-invalid');
+            esValido = false;
+        }
+
+        return esValido;
+    }
+
+    // ============== FIN VALIDACIONES ==============
     $('#btnNuevoProfesor').click(function () {
         $('#profesorId').val('');
         $('#modalProfesorLabel').text('Nuevo Profesor');
         $('#formProfesor')[0].reset();
+        // Limpiar validaciones
+        $('#formProfesor').find('.was-validated').removeClass('was-validated');
+        $('#formProfesor').find('.is-invalid').removeClass('is-invalid');
+        $('#formProfesor').find('.invalid-feedback').text('');
         $('#alertaError').addClass('d-none');
         $('#modalProfesor').modal('show');
     });
 
     // Guardar profesor
     $('#btnGuardarProfesor').click(function () {
+        // Validar formulario antes de enviar
+        if (!validarFormulario()) {
+            AjaxHelper.showError('Por favor corrija los errores del formulario.');
+            return;
+        }
+
         const profesorId = $('#profesorId').val();
         const formData = {
             nombre: $('#nombre').val(),
@@ -170,6 +352,10 @@ $(document).ready(function () {
                     $('#salario').val(profesor.salario);
                     $('#modalProfesorLabel').text('Editar Profesor');
                     $('#alertaError').addClass('d-none');
+                    // Limpiar validaciones
+                    $('#formProfesor').find('.was-validated').removeClass('was-validated');
+                    $('#formProfesor').find('.is-invalid').removeClass('is-invalid');
+                    $('#formProfesor').find('.invalid-feedback').text('');
                     $('#modalProfesor').modal('show');
                 }
             }
