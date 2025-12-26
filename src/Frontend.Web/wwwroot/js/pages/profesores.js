@@ -139,26 +139,37 @@ $(document).ready(function () {
     });
 
     // Validar Salario
-    $('#salario').on('input', function () {
-        // Limitar a 2 decimales mientras se escribe
-        let valor = $(this).val();
-        
-        // Permitir solo números y un punto
-        valor = valor.replace(/[^0-9.]/g, '');
-        
-        // Si hay más de un punto, eliminar los puntos extras
-        const partes = valor.split('.');
-        if (partes.length > 2) {
-            valor = partes[0] + '.' + partes.slice(1).join('');
+    $('#salario').on('keydown', function (e) {
+
+        if (isNaN(e.key) && e.keyCode != 8 && e.key != '.') {
+            return false;
         }
-        
-        // Limitar a 2 decimales
-        if (partes.length === 2 && partes[1].length > 2) {
-            valor = partes[0] + '.' + partes[1].substring(0, 2);
+
+        if (e.keyCode == 8) {
+            return true;
         }
-        
-        $(this).val(valor);
+
+
+        let value = $(this).val()
+        if (e.key == '.' && value.includes(".")) {
+            e.preventDefault();
+        }
+        if (value.includes(".")) {
+
+            let partes = value.split(".");
+            if (partes[1].length == 2) {
+
+                e.preventDefault();
+            }
+        }
+
+        return true;
+
     });
+
+
+
+
 
     $('#salario').on('blur change', function () {
         const valor = $(this).val();
@@ -171,7 +182,7 @@ $(document).ready(function () {
             feedback.text('Salario es requerido.');
         } else {
             const salario = parseFloat(valor);
-            
+
             // Validar decimales
             const decimales = valor.includes('.') ? valor.split('.')[1].length : 0;
             if (decimales > 2) {
@@ -227,7 +238,7 @@ $(document).ready(function () {
         const salarioValor = $('#salario').val();
         const salario = parseFloat(salarioValor);
         const decimales = salarioValor.includes('.') ? salarioValor.split('.')[1].length : 0;
-        
+
         if (isNaN(salario) || salario <= 0 || salario >= 10000 || decimales > 2) {
             $('#salario').closest('.mb-3').addClass('was-validated');
             $('#salario').addClass('is-invalid');
@@ -295,7 +306,7 @@ $(document).ready(function () {
     // Ver detalle
     $(document).on('click', '.btnVer', function () {
         const id = $(this).data('id');
-        
+
         AjaxHelper.request({
             url: '/Profesores/GetById?id=' + id,
             type: 'GET',
@@ -336,7 +347,7 @@ $(document).ready(function () {
     // Editar
     $(document).on('click', '.btnEditar', function () {
         const id = $(this).data('id');
-        
+
         AjaxHelper.request({
             url: '/Profesores/GetById?id=' + id,
             type: 'GET',
